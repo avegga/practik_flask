@@ -1,10 +1,7 @@
 from datetime import datetime, date
-
-from flask import Flask
-from flask import request
+from flask import request, Flask
 
 app = Flask(__name__)
-
 
 import model
 import logic
@@ -21,7 +18,7 @@ def _from_raw(raw_note: str) -> model.Note:
     if len(parts) == 2:
         note = model.Note()
         note.id = None
-# Добавил note.dd = date.today()
+        # Добавил note.dd = date.today()
         note.dd = date.today()
         note.title = parts[0]
         note.text = parts[1]
@@ -29,7 +26,7 @@ def _from_raw(raw_note: str) -> model.Note:
     elif len(parts) == 3:
         note = model.Note()
         note.id = parts[0]
-# Добавил note.dd = date.today()
+        # Добавил note.dd = date.today()
         note.dd = date.today()
         note.title = parts[1]
         note.text = parts[2]
@@ -40,18 +37,20 @@ def _from_raw(raw_note: str) -> model.Note:
 
 def _to_raw(note: model.Note) -> str:
     if note.id is None:
-# Добавил |{note.dd}
+        # Добавил |{note.dd}
         return f"{note.title}|{note.text}|{note.dd}"
     else:
-# Добавил |{note.dd}
+        # Добавил |{note.dd}
         return f"{note.id}|{note.title}|{note.text}|{note.dd}"
 
 
-API_ROOT = "/api/v1"
-NOTE_API_ROOT = API_ROOT + "/note"
+API_ROOT = " / api / v1 "
+NOTE_API_ROOT = API_ROOT + " / note "
 
 
-@app.route(NOTE_API_ROOT + "/", methods=["POST"])
+@app.route(NOTE_API_ROOT + " / ", methods = ["POST"])
+
+
 def create():
     try:
         data = request.get_data().decode('utf-8')
@@ -62,7 +61,9 @@ def create():
         return f"failed to CREATE with: {ex}", 404
 
 
-@app.route(NOTE_API_ROOT + "/", methods=["GET"])
+@app.route(NOTE_API_ROOT + " / ", methods = ["GET"])
+
+
 def list():
     try:
         notes = _note_logic.list()
@@ -74,7 +75,9 @@ def list():
         return f"failed to LIST with: {ex}", 404
 
 
-@app.route(NOTE_API_ROOT + "/<_id>/", methods=["GET"])
+@app.route(NOTE_API_ROOT + "/<_id>/", methods = ["GET"])
+
+
 def read(_id: str):
     try:
         note = _note_logic.read(_id)
@@ -84,7 +87,9 @@ def read(_id: str):
         return f"failed to READ with: {ex}", 404
 
 
-@app.route(NOTE_API_ROOT + "/<_id>/", methods=["PUT"])
+@app.route(NOTE_API_ROOT + "/<_id>/", methods = ["PUT"])
+
+
 def update(_id: str):
     try:
         data = request.get_data().decode('utf-8')
@@ -95,7 +100,9 @@ def update(_id: str):
         return f"failed to UPDATE with: {ex}", 404
 
 
-@app.route(NOTE_API_ROOT + "/<_id>/", methods=["DELETE"])
+@app.route(NOTE_API_ROOT + "/<_id>/", methods = ["DELETE"])
+
+
 def delete(_id: str):
     try:
         _note_logic.delete(_id)
@@ -104,4 +111,4 @@ def delete(_id: str):
         return f"failed to DELETE with: {ex}", 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug = True)
